@@ -94,4 +94,4 @@ app.get('*', (req , res)=>{
 
 app.listen(3000 , (err)=>{
     console.log('Server runing on port 3000')
-})
+});

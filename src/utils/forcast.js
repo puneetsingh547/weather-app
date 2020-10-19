@@ -10,7 +10,7 @@ forecast = (lat , long, callback)=>{
             callback('Chose correct location', undefined)
         } 
         else{
-            callback('', body)
+            callback(undefined , "Temprature is "+body.current.temp_c+ " degree celsus and wind speed is "+ body.current.wind_kph+ " Km/h")
         }
     })
 }

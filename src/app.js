@@ -6,6 +6,8 @@ const geocode = require('./utils/geocode')
 const forecast = require('./utils/forcast')
 const app = express()
 
+const port = process.env.PORT || 3000;
+
 const publicDirectoryName = path.join(__dirname , '../public')
 const viewDirectory = path.join(__dirname , '../templates/views')
 const partialDirectory = path.join(__dirname , '../templates/partials')
@@ -53,12 +55,12 @@ app.get('/help/*', (req , res)=>{
 })
 
 app.get('/weather' , (req , res)=>{
-    if(!req.query.address){
+    if (!req.query.address) {
         return res.send({
-            error: 'Please provide Address'
-        }) 
+            error: 'You must provide an address!'
+        })
     }
-    geocode(req.query.address , (error , {lattitude , longitude , location})=>{
+    geocode(req.query.address , (error , {lattitude , longitude , location} = {})=>{
         if(error){
             return res.send({error})
         }
@@ -66,8 +68,11 @@ app.get('/weather' , (req , res)=>{
             if(err){
                 return res.send(err)
             }
-             
-            res.send(forecastData)
+            res.send({
+                forecast: forecastData,
+                location,
+                address: req.query.address
+            })
 
         })
     })
@@ -92,6 +97,6 @@ app.get('*', (req , res)=>{
     });
 })
 
-app.listen(3000 , (err)=>{
-    console.log('Server runing on port 3000')
+app.listen(port , (err)=>{
+    console.log('Server runing on port '+ port)
 });
